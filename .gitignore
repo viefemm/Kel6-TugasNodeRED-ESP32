@@ -1,0 +1,18 @@
+# Operating System Files
+desktop.ini
+Thumbs.db
+.DS_Store
+
+# PlatformIO Build Artifacts
+.pio/
+.vscode/
+compile_commands.json
+*.bin
+*.elf
+*.hex
+
+# Temporary / Unfinished deliverables
+# (Akan ditambahkan saat pengerjaan selesai)
+node-red/
+docs/
+video/
