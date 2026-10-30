@@ -31,8 +31,19 @@ const char *ROOM_B = "ruang2";
 // isi misalnya "kel1/" sehingga menjadi "kel1/room/ruang1/temp"
 const char *TOPIC_PREFIX = "pens/klp6/";
 
-const char *WIFI_SSID = "eepisss";
-const char *WIFI_PASS = "00000003";
+// ===== KREDENSIAL WI-FI (SECRETS) =====
+// Kredensial disimpan terpisah di include/secrets.h dan diabaikan oleh .gitignore
+#if __has_include("secrets.h")
+  #include "secrets.h"
+#elif __has_include("include/secrets.h")
+  #include "include/secrets.h"
+#else
+  #define SECRET_WIFI_SSID "SSID_WIFI_LAB"
+  #define SECRET_WIFI_PASS "PASSWORD_WIFI_LAB"
+#endif
+
+const char *WIFI_SSID = SECRET_WIFI_SSID;
+const char *WIFI_PASS = SECRET_WIFI_PASS;
 const char *BROKER_HOST = "broker.hivemq.com";
 const int BROKER_PORT = 1883;
 
