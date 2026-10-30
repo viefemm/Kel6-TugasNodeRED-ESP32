@@ -16,3 +16,7 @@ compile_commands.json
 node-red/
 docs/
 video/
+
+# Kredensial Rahasia / Wi-Fi
+**/secrets.h
+!**/secrets.h.example
