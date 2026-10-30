@@ -1,19 +1,3 @@
-/**
- * ============================================================================
- * Evaluasi Mata Kuliah Jaringan Sensor dan IoT
- * Materi      : MQTT pada ESP32 (2 ESP32 dengan FreeRTOS -> 1 ESP32 = 2
- * Ruangan) Platform    : PlatformIO (PIO) - Arduino Framework File        :
- * src/main.cpp  (atau KelX_TugasMQTT_2ESP_FreeRTOS.cpp) Broker      :
- * broker.hivemq.com:1883 (Public HiveMQ Broker)x
- *
- * Cara Pakai:
- * - Upload ke ESP32 #1: Set ROOM_A = "ruang1", ROOM_B = "ruang2"
- * - Upload ke ESP32 #2: Set ROOM_A = "ruang3", ROOM_B = "ruang4"
- * - Tombol BOOT (GPIO0) pada ESP32 #2 digunakan untuk simulasi cabut daya
- *   ruang4 pada Uji T7 (LWT).
- * ============================================================================
- */
-
 #include <Arduino.h>
 #include <Adafruit_AHTX0.h>
 #include <PubSubClient.h>
