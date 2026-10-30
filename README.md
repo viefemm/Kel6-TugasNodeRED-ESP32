@@ -9,7 +9,7 @@ Sistem telemetri multi-ruangan cerdas berbasis protokol Message Queuing Telemetr
 
 | Ruangan | Nama Anggota | NRP | Perangkat Sensor / Simulator | Username GitHub |
 | :--- | :--- | :--- | :--- | :--- | 
-| **Ruang 1** | Enzillana Afwa | 2124600092 | Potensiometer 10 kΩ | [viefemm](github.com/Enzillana) |
+| **Ruang 1** | Enzillana Afwa | 2124600092 | Potensiometer 10 kΩ | [Enzillana](github.com/Enzillana) |
 | **Ruang 2** | Syauqi Fardi Sya'bani | 2124600099 | **Sensor Digital I2C AHT10** | [viefemm](github.com/viefemm) |
 | **Ruang 3** | Farrel Putra Ardiansyah | 2124600116 | Potensiometer 10 kΩ | [frpaa](github.com/frpaa) |
 | **Ruang 4** | Rara Kissya Erbianti | 2124600119 | Potensiometer 10 kΩ | [ssyashain](github.com/ssyashain) | 
