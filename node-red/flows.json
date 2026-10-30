@@ -1,0 +1,1524 @@
+[
+    {
+        "id": "flow_kel6_mqtt",
+        "type": "tab",
+        "label": "Kelompok 6 - MQTT 4 Ruangan",
+        "disabled": false,
+        "info": "Dashboard Node-RED Monitoring Suhu & Kelembapan serta Kendali 8 Lampu pada 4 Ruangan ESP32 FreeRTOS (Kelompok 6 PENS)\nBroker: broker.hivemq.com:1883\nPrefix Topik: pens/klp6/"
+    },
+    {
+        "id": "ui_chart_all_temps",
+        "type": "ui_chart",
+        "z": "flow_kel6_mqtt",
+        "name": "",
+        "group": "ui_group_chart",
+        "order": 1,
+        "width": "12",
+        "height": "6",
+        "label": "Perbandingan Suhu Ruangan (0 - 50 °C)",
+        "chartType": "line",
+        "legend": "true",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "Menunggu data telemetri...",
+        "dot": true,
+        "ymin": "0",
+        "ymax": "50",
+        "removeOlder": "10",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "60",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#38bdf8",
+            "#fbbf24",
+            "#34d399",
+            "#f472b6",
+            "#a855f7",
+            "#ec4899",
+            "#64748b",
+            "#000000",
+            "#000000"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 940,
+        "y": 420,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "mqtt_in_temp_ruang1",
+        "type": "mqtt in",
+        "z": "flow_kel6_mqtt",
+        "name": "Sub ruang1/temperature",
+        "topic": "pens/klp6/ruang1/temperature",
+        "qos": "0",
+        "datatype": "utf8",
+        "broker": "broker_hivemq_kel6",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 130,
+        "y": 80,
+        "wires": [
+            [
+                "fn_temp_ruang1"
+            ]
+        ]
+    },
+    {
+        "id": "fn_temp_ruang1",
+        "type": "function",
+        "z": "flow_kel6_mqtt",
+        "name": "Format Suhu Ruangan 1",
+        "func": "let val = parseFloat(msg.payload);\nmsg.payload = isNaN(val) ? 0 : val;\nmsg.topic = 'Ruangan 1';\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 370,
+        "y": 80,
+        "wires": [
+            [
+                "ui_gauge_temp_ruang1",
+                "ui_chart_all_temps"
+            ]
+        ]
+    },
+    {
+        "id": "ui_gauge_temp_ruang1",
+        "type": "ui_gauge",
+        "z": "flow_kel6_mqtt",
+        "name": "Suhu Ruangan 1",
+        "group": "ui_group_ruang1",
+        "order": 2,
+        "width": "3",
+        "height": "3",
+        "gtype": "gage",
+        "title": "Suhu",
+        "label": "°C",
+        "format": "{{value}} °C",
+        "min": 0,
+        "max": "50",
+        "colors": [
+            "#38bdf8",
+            "#34d399",
+            "#ef4444"
+        ],
+        "seg1": "28",
+        "seg2": "38",
+        "diff": false,
+        "className": "",
+        "x": 600,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "mqtt_in_humid_ruang1",
+        "type": "mqtt in",
+        "z": "flow_kel6_mqtt",
+        "name": "Sub ruang1/humidity",
+        "topic": "pens/klp6/ruang1/humidity",
+        "qos": "0",
+        "datatype": "utf8",
+        "broker": "broker_hivemq_kel6",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 120,
+        "y": 120,
+        "wires": [
+            [
+                "fn_humid_ruang1"
+            ]
+        ]
+    },
+    {
+        "id": "fn_humid_ruang1",
+        "type": "function",
+        "z": "flow_kel6_mqtt",
+        "name": "Format Humid Ruangan 1",
+        "func": "let val = parseFloat(msg.payload);\nmsg.payload = isNaN(val) ? 0 : val;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 370,
+        "y": 120,
+        "wires": [
+            [
+                "ui_gauge_humid_ruang1"
+            ]
+        ]
+    },
+    {
+        "id": "ui_gauge_humid_ruang1",
+        "type": "ui_gauge",
+        "z": "flow_kel6_mqtt",
+        "name": "Kelembapan Ruangan 1",
+        "group": "ui_group_ruang1",
+        "order": 3,
+        "width": "3",
+        "height": "3",
+        "gtype": "gage",
+        "title": "Kelembapan",
+        "label": "%RH",
+        "format": "{{value}} %RH",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#fbbf24",
+            "#06b6d4",
+            "#3b82f6"
+        ],
+        "seg1": "45",
+        "seg2": "65",
+        "diff": false,
+        "className": "",
+        "x": 610,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "mqtt_in_status_ruang1",
+        "type": "mqtt in",
+        "z": "flow_kel6_mqtt",
+        "name": "Sub ruang1/status",
+        "topic": "pens/klp6/ruang1/status",
+        "qos": "0",
+        "datatype": "utf8",
+        "broker": "broker_hivemq_kel6",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 110,
+        "y": 40,
+        "wires": [
+            [
+                "fn_status_ruang1"
+            ]
+        ]
+    },
+    {
+        "id": "fn_status_ruang1",
+        "type": "function",
+        "z": "flow_kel6_mqtt",
+        "name": "Format Status Ruangan 1",
+        "func": "let st = (msg.payload || '').toString().trim().toUpperCase();\nif (st === 'ONLINE') {\n    msg.payload = '<span style=\"color:#22c55e; font-weight:bold;\">● ONLINE</span>';\n} else {\n    msg.payload = '<span style=\"color:#ef4444; font-weight:bold;\">○ OFFLINE</span>';\n}\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 370,
+        "y": 40,
+        "wires": [
+            [
+                "ui_text_status_ruang1"
+            ]
+        ]
+    },
+    {
+        "id": "ui_text_status_ruang1",
+        "type": "ui_text",
+        "z": "flow_kel6_mqtt",
+        "group": "ui_group_ruang1",
+        "order": 1,
+        "width": "6",
+        "height": "1",
+        "name": "Status Ruangan 1",
+        "label": "Status Node:",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 600,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "ui_sw_l1_ruang1",
+        "type": "ui_switch",
+        "z": "flow_kel6_mqtt",
+        "name": "Lampu 1 Ruangan 1",
+        "label": "Lampu 1",
+        "tooltip": "Kendalikan Lampu 1 Ruangan 1 (QoS 1)",
+        "group": "ui_group_ruang1",
+        "order": 4,
+        "width": "3",
+        "height": "1",
+        "passthru": false,
+        "decouple": "false",
+        "topic": "pens/klp6/ruang1/lamp1",
+        "topicType": "str",
+        "style": "",
+        "onvalue": "1",
+        "onvalueType": "str",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "0",
+        "offvalueType": "str",
+        "officon": "",
+        "offcolor": "",
+        "animate": true,
+        "className": "",
+        "x": 360,
+        "y": 160,
+        "wires": [
+            [
+                "mqtt_out_l1_ruang1"
+            ]
+        ]
+    },
+    {
+        "id": "mqtt_out_l1_ruang1",
+        "type": "mqtt out",
+        "z": "flow_kel6_mqtt",
+        "name": "Pub ruang1/lamp1",
+        "topic": "pens/klp6/ruang1/lamp1",
+        "qos": "1",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "broker_hivemq_kel6",
+        "x": 600,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "mqtt_in_l1_ruang1",
+        "type": "mqtt in",
+        "z": "flow_kel6_mqtt",
+        "name": "Feedback ruang1/lamp1",
+        "topic": "pens/klp6/ruang1/lamp1",
+        "qos": "1",
+        "datatype": "utf8",
+        "broker": "broker_hivemq_kel6",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 130,
+        "y": 160,
+        "wires": [
+            [
+                "ui_sw_l1_ruang1"
+            ]
+        ]
+    },
+    {
+        "id": "ui_sw_l2_ruang1",
+        "type": "ui_switch",
+        "z": "flow_kel6_mqtt",
+        "name": "Lampu 2 Ruangan 1",
+        "label": "Lampu 2",
+        "tooltip": "Kendalikan Lampu 2 Ruangan 1 (QoS 1)",
+        "group": "ui_group_ruang1",
+        "order": 5,
+        "width": "3",
+        "height": "1",
+        "passthru": false,
+        "decouple": "false",
+        "topic": "pens/klp6/ruang1/lamp2",
+        "topicType": "str",
+        "style": "",
+        "onvalue": "1",
+        "onvalueType": "str",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "0",
+        "offvalueType": "str",
+        "officon": "",
+        "offcolor": "",
+        "animate": true,
+        "className": "",
+        "x": 360,
+        "y": 200,
+        "wires": [
+            [
+                "mqtt_out_l2_ruang1"
+            ]
+        ]
+    },
+    {
+        "id": "mqtt_out_l2_ruang1",
+        "type": "mqtt out",
+        "z": "flow_kel6_mqtt",
+        "name": "Pub ruang1/lamp2",
+        "topic": "pens/klp6/ruang1/lamp2",
+        "qos": "1",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "broker_hivemq_kel6",
+        "x": 600,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "mqtt_in_l2_ruang1",
+        "type": "mqtt in",
+        "z": "flow_kel6_mqtt",
+        "name": "Feedback ruang1/lamp2",
+        "topic": "pens/klp6/ruang1/lamp2",
+        "qos": "1",
+        "datatype": "utf8",
+        "broker": "broker_hivemq_kel6",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 130,
+        "y": 200,
+        "wires": [
+            [
+                "ui_sw_l2_ruang1"
+            ]
+        ]
+    },
+    {
+        "id": "mqtt_in_temp_ruang2",
+        "type": "mqtt in",
+        "z": "flow_kel6_mqtt",
+        "name": "Sub ruang2/temperature",
+        "topic": "pens/klp6/ruang2/temperature",
+        "qos": "0",
+        "datatype": "utf8",
+        "broker": "broker_hivemq_kel6",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 130,
+        "y": 280,
+        "wires": [
+            [
+                "fn_temp_ruang2"
+            ]
+        ]
+    },
+    {
+        "id": "fn_temp_ruang2",
+        "type": "function",
+        "z": "flow_kel6_mqtt",
+        "name": "Format Suhu Ruangan 2",
+        "func": "let val = parseFloat(msg.payload);\nmsg.payload = isNaN(val) ? 0 : val;\nmsg.topic = 'Ruangan 2';\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 370,
+        "y": 280,
+        "wires": [
+            [
+                "ui_gauge_temp_ruang2",
+                "ui_chart_all_temps"
+            ]
+        ]
+    },
+    {
+        "id": "ui_gauge_temp_ruang2",
+        "type": "ui_gauge",
+        "z": "flow_kel6_mqtt",
+        "name": "Suhu Ruangan 2",
+        "group": "ui_group_ruang2",
+        "order": 2,
+        "width": "3",
+        "height": "3",
+        "gtype": "gage",
+        "title": "Suhu",
+        "label": "°C",
+        "format": "{{value}} °C",
+        "min": 0,
+        "max": "50",
+        "colors": [
+            "#38bdf8",
+            "#34d399",
+            "#ef4444"
+        ],
+        "seg1": "28",
+        "seg2": "38",
+        "diff": false,
+        "className": "",
+        "x": 600,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "mqtt_in_humid_ruang2",
+        "type": "mqtt in",
+        "z": "flow_kel6_mqtt",
+        "name": "Sub ruang2/humidity",
+        "topic": "pens/klp6/ruang2/humidity",
+        "qos": "0",
+        "datatype": "utf8",
+        "broker": "broker_hivemq_kel6",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 120,
+        "y": 320,
+        "wires": [
+            [
+                "fn_humid_ruang2"
+            ]
+        ]
+    },
+    {
+        "id": "fn_humid_ruang2",
+        "type": "function",
+        "z": "flow_kel6_mqtt",
+        "name": "Format Humid Ruangan 2",
+        "func": "let val = parseFloat(msg.payload);\nmsg.payload = isNaN(val) ? 0 : val;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 370,
+        "y": 320,
+        "wires": [
+            [
+                "ui_gauge_humid_ruang2"
+            ]
+        ]
+    },
+    {
+        "id": "ui_gauge_humid_ruang2",
+        "type": "ui_gauge",
+        "z": "flow_kel6_mqtt",
+        "name": "Kelembapan Ruangan 2",
+        "group": "ui_group_ruang2",
+        "order": 3,
+        "width": "3",
+        "height": "3",
+        "gtype": "gage",
+        "title": "Kelembapan",
+        "label": "%RH",
+        "format": "{{value}} %RH",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#fbbf24",
+            "#06b6d4",
+            "#3b82f6"
+        ],
+        "seg1": "45",
+        "seg2": "65",
+        "diff": false,
+        "className": "",
+        "x": 610,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "mqtt_in_status_ruang2",
+        "type": "mqtt in",
+        "z": "flow_kel6_mqtt",
+        "name": "Sub ruang2/status",
+        "topic": "pens/klp6/ruang2/status",
+        "qos": "0",
+        "datatype": "utf8",
+        "broker": "broker_hivemq_kel6",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 110,
+        "y": 240,
+        "wires": [
+            [
+                "fn_status_ruang2"
+            ]
+        ]
+    },
+    {
+        "id": "fn_status_ruang2",
+        "type": "function",
+        "z": "flow_kel6_mqtt",
+        "name": "Format Status Ruangan 2",
+        "func": "let st = (msg.payload || '').toString().trim().toUpperCase();\nif (st === 'ONLINE') {\n    msg.payload = '<span style=\"color:#22c55e; font-weight:bold;\">● ONLINE</span>';\n} else {\n    msg.payload = '<span style=\"color:#ef4444; font-weight:bold;\">○ OFFLINE</span>';\n}\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 370,
+        "y": 240,
+        "wires": [
+            [
+                "ui_text_status_ruang2"
+            ]
+        ]
+    },
+    {
+        "id": "ui_text_status_ruang2",
+        "type": "ui_text",
+        "z": "flow_kel6_mqtt",
+        "group": "ui_group_ruang2",
+        "order": 1,
+        "width": "6",
+        "height": "1",
+        "name": "Status Ruangan 2",
+        "label": "Status Node:",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 600,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "ui_sw_l1_ruang2",
+        "type": "ui_switch",
+        "z": "flow_kel6_mqtt",
+        "name": "Lampu 1 Ruangan 2",
+        "label": "Lampu 1 ",
+        "tooltip": "Kendalikan Lampu 1 Ruangan 2 (QoS 1)",
+        "group": "ui_group_ruang2",
+        "order": 4,
+        "width": "3",
+        "height": "1",
+        "passthru": false,
+        "decouple": "false",
+        "topic": "pens/klp6/ruang2/lamp1",
+        "topicType": "str",
+        "style": "",
+        "onvalue": "1",
+        "onvalueType": "str",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "0",
+        "offvalueType": "str",
+        "officon": "",
+        "offcolor": "",
+        "animate": true,
+        "className": "",
+        "x": 360,
+        "y": 360,
+        "wires": [
+            [
+                "mqtt_out_l1_ruang2"
+            ]
+        ]
+    },
+    {
+        "id": "mqtt_out_l1_ruang2",
+        "type": "mqtt out",
+        "z": "flow_kel6_mqtt",
+        "name": "Pub ruang2/lamp1",
+        "topic": "pens/klp6/ruang2/lamp1",
+        "qos": "1",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "broker_hivemq_kel6",
+        "x": 600,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "mqtt_in_l1_ruang2",
+        "type": "mqtt in",
+        "z": "flow_kel6_mqtt",
+        "name": "Feedback ruang2/lamp1",
+        "topic": "pens/klp6/ruang2/lamp1",
+        "qos": "1",
+        "datatype": "utf8",
+        "broker": "broker_hivemq_kel6",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 130,
+        "y": 360,
+        "wires": [
+            [
+                "ui_sw_l1_ruang2"
+            ]
+        ]
+    },
+    {
+        "id": "ui_sw_l2_ruang2",
+        "type": "ui_switch",
+        "z": "flow_kel6_mqtt",
+        "name": "Lampu 2 Ruangan 2",
+        "label": "Lampu 2",
+        "tooltip": "Kendalikan Lampu 2 Ruangan 2 (QoS 1)",
+        "group": "ui_group_ruang2",
+        "order": 5,
+        "width": "3",
+        "height": "1",
+        "passthru": false,
+        "decouple": "false",
+        "topic": "pens/klp6/ruang2/lamp2",
+        "topicType": "str",
+        "style": "",
+        "onvalue": "1",
+        "onvalueType": "str",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "0",
+        "offvalueType": "str",
+        "officon": "",
+        "offcolor": "",
+        "animate": true,
+        "className": "",
+        "x": 360,
+        "y": 400,
+        "wires": [
+            [
+                "mqtt_out_l2_ruang2"
+            ]
+        ]
+    },
+    {
+        "id": "mqtt_out_l2_ruang2",
+        "type": "mqtt out",
+        "z": "flow_kel6_mqtt",
+        "name": "Pub ruang2/lamp2",
+        "topic": "pens/klp6/ruang2/lamp2",
+        "qos": "1",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "broker_hivemq_kel6",
+        "x": 600,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "mqtt_in_l2_ruang2",
+        "type": "mqtt in",
+        "z": "flow_kel6_mqtt",
+        "name": "Feedback ruang2/lamp2",
+        "topic": "pens/klp6/ruang2/lamp2",
+        "qos": "1",
+        "datatype": "utf8",
+        "broker": "broker_hivemq_kel6",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 130,
+        "y": 400,
+        "wires": [
+            [
+                "ui_sw_l2_ruang2"
+            ]
+        ]
+    },
+    {
+        "id": "mqtt_in_temp_ruang3",
+        "type": "mqtt in",
+        "z": "flow_kel6_mqtt",
+        "name": "Sub ruang3/temperature",
+        "topic": "pens/klp6/ruang3/temperature",
+        "qos": "0",
+        "datatype": "utf8",
+        "broker": "broker_hivemq_kel6",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 130,
+        "y": 480,
+        "wires": [
+            [
+                "fn_temp_ruang3"
+            ]
+        ]
+    },
+    {
+        "id": "fn_temp_ruang3",
+        "type": "function",
+        "z": "flow_kel6_mqtt",
+        "name": "Format Suhu Ruangan 3",
+        "func": "let val = parseFloat(msg.payload);\nmsg.payload = isNaN(val) ? 0 : val;\nmsg.topic = 'Ruangan 3';\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 370,
+        "y": 480,
+        "wires": [
+            [
+                "ui_gauge_temp_ruang3",
+                "ui_chart_all_temps"
+            ]
+        ]
+    },
+    {
+        "id": "ui_gauge_temp_ruang3",
+        "type": "ui_gauge",
+        "z": "flow_kel6_mqtt",
+        "name": "Suhu Ruangan 3",
+        "group": "ui_group_ruang3",
+        "order": 2,
+        "width": "3",
+        "height": "3",
+        "gtype": "gage",
+        "title": "Suhu",
+        "label": "°C",
+        "format": "{{value}} °C",
+        "min": 0,
+        "max": "50",
+        "colors": [
+            "#38bdf8",
+            "#34d399",
+            "#ef4444"
+        ],
+        "seg1": "28",
+        "seg2": "38",
+        "diff": false,
+        "className": "",
+        "x": 600,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "mqtt_in_humid_ruang3",
+        "type": "mqtt in",
+        "z": "flow_kel6_mqtt",
+        "name": "Sub ruang3/humidity",
+        "topic": "pens/klp6/ruang3/humidity",
+        "qos": "0",
+        "datatype": "utf8",
+        "broker": "broker_hivemq_kel6",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 120,
+        "y": 520,
+        "wires": [
+            [
+                "fn_humid_ruang3"
+            ]
+        ]
+    },
+    {
+        "id": "fn_humid_ruang3",
+        "type": "function",
+        "z": "flow_kel6_mqtt",
+        "name": "Format Humid Ruangan 3",
+        "func": "let val = parseFloat(msg.payload);\nmsg.payload = isNaN(val) ? 0 : val;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 370,
+        "y": 520,
+        "wires": [
+            [
+                "ui_gauge_humid_ruang3"
+            ]
+        ]
+    },
+    {
+        "id": "ui_gauge_humid_ruang3",
+        "type": "ui_gauge",
+        "z": "flow_kel6_mqtt",
+        "name": "Kelembapan Ruangan 3",
+        "group": "ui_group_ruang3",
+        "order": 3,
+        "width": "3",
+        "height": "3",
+        "gtype": "gage",
+        "title": "Kelembapan",
+        "label": "%RH",
+        "format": "{{value}} %RH",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#fbbf24",
+            "#06b6d4",
+            "#3b82f6"
+        ],
+        "seg1": "45",
+        "seg2": "65",
+        "diff": false,
+        "className": "",
+        "x": 610,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "mqtt_in_status_ruang3",
+        "type": "mqtt in",
+        "z": "flow_kel6_mqtt",
+        "name": "Sub ruang3/status",
+        "topic": "pens/klp6/ruang3/status",
+        "qos": "0",
+        "datatype": "utf8",
+        "broker": "broker_hivemq_kel6",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 110,
+        "y": 440,
+        "wires": [
+            [
+                "fn_status_ruang3"
+            ]
+        ]
+    },
+    {
+        "id": "fn_status_ruang3",
+        "type": "function",
+        "z": "flow_kel6_mqtt",
+        "name": "Format Status Ruangan 3",
+        "func": "let st = (msg.payload || '').toString().trim().toUpperCase();\nif (st === 'ONLINE') {\n    msg.payload = '<span style=\"color:#22c55e; font-weight:bold;\">● ONLINE</span>';\n} else {\n    msg.payload = '<span style=\"color:#ef4444; font-weight:bold;\">○ OFFLINE</span>';\n}\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 370,
+        "y": 440,
+        "wires": [
+            [
+                "ui_text_status_ruang3"
+            ]
+        ]
+    },
+    {
+        "id": "ui_text_status_ruang3",
+        "type": "ui_text",
+        "z": "flow_kel6_mqtt",
+        "group": "ui_group_ruang3",
+        "order": 1,
+        "width": "6",
+        "height": "1",
+        "name": "Status Ruangan 3",
+        "label": "Status Node:",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 600,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "ui_sw_l1_ruang3",
+        "type": "ui_switch",
+        "z": "flow_kel6_mqtt",
+        "name": "Lampu 1 Ruangan 3",
+        "label": "Lampu 1",
+        "tooltip": "Kendalikan Lampu 1 Ruangan 3 (QoS 1)",
+        "group": "ui_group_ruang3",
+        "order": 4,
+        "width": "3",
+        "height": "1",
+        "passthru": false,
+        "decouple": "false",
+        "topic": "pens/klp6/ruang3/lamp1",
+        "topicType": "str",
+        "style": "",
+        "onvalue": "1",
+        "onvalueType": "str",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "0",
+        "offvalueType": "str",
+        "officon": "",
+        "offcolor": "",
+        "animate": true,
+        "className": "",
+        "x": 360,
+        "y": 560,
+        "wires": [
+            [
+                "mqtt_out_l1_ruang3"
+            ]
+        ]
+    },
+    {
+        "id": "mqtt_out_l1_ruang3",
+        "type": "mqtt out",
+        "z": "flow_kel6_mqtt",
+        "name": "Pub ruang3/lamp1",
+        "topic": "pens/klp6/ruang3/lamp1",
+        "qos": "1",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "broker_hivemq_kel6",
+        "x": 600,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "mqtt_in_l1_ruang3",
+        "type": "mqtt in",
+        "z": "flow_kel6_mqtt",
+        "name": "Feedback ruang3/lamp1",
+        "topic": "pens/klp6/ruang3/lamp1",
+        "qos": "1",
+        "datatype": "utf8",
+        "broker": "broker_hivemq_kel6",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 130,
+        "y": 560,
+        "wires": [
+            [
+                "ui_sw_l1_ruang3"
+            ]
+        ]
+    },
+    {
+        "id": "ui_sw_l2_ruang3",
+        "type": "ui_switch",
+        "z": "flow_kel6_mqtt",
+        "name": "Lampu 2 Ruangan 3",
+        "label": "Lampu 2 ",
+        "tooltip": "Kendalikan Lampu 2 Ruangan 3 (QoS 1)",
+        "group": "ui_group_ruang3",
+        "order": 5,
+        "width": "3",
+        "height": "1",
+        "passthru": false,
+        "decouple": "false",
+        "topic": "pens/klp6/ruang3/lamp2",
+        "topicType": "str",
+        "style": "",
+        "onvalue": "1",
+        "onvalueType": "str",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "0",
+        "offvalueType": "str",
+        "officon": "",
+        "offcolor": "",
+        "animate": true,
+        "className": "",
+        "x": 360,
+        "y": 600,
+        "wires": [
+            [
+                "mqtt_out_l2_ruang3"
+            ]
+        ]
+    },
+    {
+        "id": "mqtt_out_l2_ruang3",
+        "type": "mqtt out",
+        "z": "flow_kel6_mqtt",
+        "name": "Pub ruang3/lamp2",
+        "topic": "pens/klp6/ruang3/lamp2",
+        "qos": "1",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "broker_hivemq_kel6",
+        "x": 600,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "mqtt_in_l2_ruang3",
+        "type": "mqtt in",
+        "z": "flow_kel6_mqtt",
+        "name": "Feedback ruang3/lamp2",
+        "topic": "pens/klp6/ruang3/lamp2",
+        "qos": "1",
+        "datatype": "utf8",
+        "broker": "broker_hivemq_kel6",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 130,
+        "y": 600,
+        "wires": [
+            [
+                "ui_sw_l2_ruang3"
+            ]
+        ]
+    },
+    {
+        "id": "mqtt_in_temp_ruang4",
+        "type": "mqtt in",
+        "z": "flow_kel6_mqtt",
+        "name": "Sub ruang4/temperature",
+        "topic": "pens/klp6/ruang4/temperature",
+        "qos": "0",
+        "datatype": "utf8",
+        "broker": "broker_hivemq_kel6",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 130,
+        "y": 680,
+        "wires": [
+            [
+                "fn_temp_ruang4"
+            ]
+        ]
+    },
+    {
+        "id": "fn_temp_ruang4",
+        "type": "function",
+        "z": "flow_kel6_mqtt",
+        "name": "Format Suhu Ruangan 4",
+        "func": "let val = parseFloat(msg.payload);\nmsg.payload = isNaN(val) ? 0 : val;\nmsg.topic = 'Ruangan 4';\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 370,
+        "y": 680,
+        "wires": [
+            [
+                "ui_gauge_temp_ruang4",
+                "ui_chart_all_temps"
+            ]
+        ]
+    },
+    {
+        "id": "ui_gauge_temp_ruang4",
+        "type": "ui_gauge",
+        "z": "flow_kel6_mqtt",
+        "name": "Suhu Ruangan 4",
+        "group": "ui_group_ruang4",
+        "order": 2,
+        "width": "3",
+        "height": "3",
+        "gtype": "gage",
+        "title": "Suhu",
+        "label": "°C",
+        "format": "{{value}} °C",
+        "min": 0,
+        "max": "50",
+        "colors": [
+            "#38bdf8",
+            "#34d399",
+            "#ef4444"
+        ],
+        "seg1": "28",
+        "seg2": "38",
+        "diff": false,
+        "className": "",
+        "x": 600,
+        "y": 680,
+        "wires": []
+    },
+    {
+        "id": "mqtt_in_humid_ruang4",
+        "type": "mqtt in",
+        "z": "flow_kel6_mqtt",
+        "name": "Sub ruang4/humidity",
+        "topic": "pens/klp6/ruang4/humidity",
+        "qos": "0",
+        "datatype": "utf8",
+        "broker": "broker_hivemq_kel6",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 120,
+        "y": 720,
+        "wires": [
+            [
+                "fn_humid_ruang4"
+            ]
+        ]
+    },
+    {
+        "id": "fn_humid_ruang4",
+        "type": "function",
+        "z": "flow_kel6_mqtt",
+        "name": "Format Humid Ruangan 4",
+        "func": "let val = parseFloat(msg.payload);\nmsg.payload = isNaN(val) ? 0 : val;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 370,
+        "y": 720,
+        "wires": [
+            [
+                "ui_gauge_humid_ruang4"
+            ]
+        ]
+    },
+    {
+        "id": "ui_gauge_humid_ruang4",
+        "type": "ui_gauge",
+        "z": "flow_kel6_mqtt",
+        "name": "Kelembapan Ruangan 4",
+        "group": "ui_group_ruang4",
+        "order": 3,
+        "width": "3",
+        "height": "3",
+        "gtype": "gage",
+        "title": "Kelembapan",
+        "label": "%RH",
+        "format": "{{value}} %RH",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#fbbf24",
+            "#06b6d4",
+            "#3b82f6"
+        ],
+        "seg1": "45",
+        "seg2": "65",
+        "diff": false,
+        "className": "",
+        "x": 610,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "mqtt_in_status_ruang4",
+        "type": "mqtt in",
+        "z": "flow_kel6_mqtt",
+        "name": "Sub ruang4/status",
+        "topic": "pens/klp6/ruang4/status",
+        "qos": "0",
+        "datatype": "utf8",
+        "broker": "broker_hivemq_kel6",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 110,
+        "y": 640,
+        "wires": [
+            [
+                "fn_status_ruang4"
+            ]
+        ]
+    },
+    {
+        "id": "fn_status_ruang4",
+        "type": "function",
+        "z": "flow_kel6_mqtt",
+        "name": "Format Status Ruangan 4",
+        "func": "let st = (msg.payload || '').toString().trim().toUpperCase();\nif (st === 'ONLINE') {\n    msg.payload = '<span style=\"color:#22c55e; font-weight:bold;\">● ONLINE</span>';\n} else {\n    msg.payload = '<span style=\"color:#ef4444; font-weight:bold;\">○ OFFLINE</span>';\n}\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 370,
+        "y": 640,
+        "wires": [
+            [
+                "ui_text_status_ruang4"
+            ]
+        ]
+    },
+    {
+        "id": "ui_text_status_ruang4",
+        "type": "ui_text",
+        "z": "flow_kel6_mqtt",
+        "group": "ui_group_ruang4",
+        "order": 1,
+        "width": "6",
+        "height": "1",
+        "name": "Status Ruangan 4",
+        "label": "Status Node:",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 600,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "ui_sw_l1_ruang4",
+        "type": "ui_switch",
+        "z": "flow_kel6_mqtt",
+        "name": "Lampu 1 Ruangan 4",
+        "label": "Lampu 1",
+        "tooltip": "Kendalikan Lampu 1 Ruangan 4 (QoS 1)",
+        "group": "ui_group_ruang4",
+        "order": 4,
+        "width": "3",
+        "height": "1",
+        "passthru": false,
+        "decouple": "false",
+        "topic": "pens/klp6/ruang4/lamp1",
+        "topicType": "str",
+        "style": "",
+        "onvalue": "1",
+        "onvalueType": "str",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "0",
+        "offvalueType": "str",
+        "officon": "",
+        "offcolor": "",
+        "animate": true,
+        "className": "",
+        "x": 360,
+        "y": 760,
+        "wires": [
+            [
+                "mqtt_out_l1_ruang4"
+            ]
+        ]
+    },
+    {
+        "id": "mqtt_out_l1_ruang4",
+        "type": "mqtt out",
+        "z": "flow_kel6_mqtt",
+        "name": "Pub ruang4/lamp1",
+        "topic": "pens/klp6/ruang4/lamp1",
+        "qos": "1",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "broker_hivemq_kel6",
+        "x": 600,
+        "y": 760,
+        "wires": []
+    },
+    {
+        "id": "mqtt_in_l1_ruang4",
+        "type": "mqtt in",
+        "z": "flow_kel6_mqtt",
+        "name": "Feedback ruang4/lamp1",
+        "topic": "pens/klp6/ruang4/lamp1",
+        "qos": "1",
+        "datatype": "utf8",
+        "broker": "broker_hivemq_kel6",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 130,
+        "y": 760,
+        "wires": [
+            [
+                "ui_sw_l1_ruang4"
+            ]
+        ]
+    },
+    {
+        "id": "ui_sw_l2_ruang4",
+        "type": "ui_switch",
+        "z": "flow_kel6_mqtt",
+        "name": "Lampu 2 Ruangan 4",
+        "label": "Lampu 2",
+        "tooltip": "Kendalikan Lampu 2 Ruangan 4 (QoS 1)",
+        "group": "ui_group_ruang4",
+        "order": 5,
+        "width": "3",
+        "height": "1",
+        "passthru": false,
+        "decouple": "false",
+        "topic": "pens/klp6/ruang4/lamp2",
+        "topicType": "str",
+        "style": "",
+        "onvalue": "1",
+        "onvalueType": "str",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "0",
+        "offvalueType": "str",
+        "officon": "",
+        "offcolor": "",
+        "animate": true,
+        "className": "",
+        "x": 360,
+        "y": 800,
+        "wires": [
+            [
+                "mqtt_out_l2_ruang4"
+            ]
+        ]
+    },
+    {
+        "id": "mqtt_out_l2_ruang4",
+        "type": "mqtt out",
+        "z": "flow_kel6_mqtt",
+        "name": "Pub ruang4/lamp2",
+        "topic": "pens/klp6/ruang4/lamp2",
+        "qos": "1",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "broker_hivemq_kel6",
+        "x": 600,
+        "y": 800,
+        "wires": []
+    },
+    {
+        "id": "mqtt_in_l2_ruang4",
+        "type": "mqtt in",
+        "z": "flow_kel6_mqtt",
+        "name": "Feedback ruang4/lamp2",
+        "topic": "pens/klp6/ruang4/lamp2",
+        "qos": "1",
+        "datatype": "utf8",
+        "broker": "broker_hivemq_kel6",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 130,
+        "y": 800,
+        "wires": [
+            [
+                "ui_sw_l2_ruang4"
+            ]
+        ]
+    },
+    {
+        "id": "ui_group_chart",
+        "type": "ui_group",
+        "name": "Grafik Telemetri Real-Time Suhu 4 Ruangan",
+        "tab": "ui_tab_kel6",
+        "order": 5,
+        "disp": true,
+        "width": "12",
+        "collapse": false
+    },
+    {
+        "id": "broker_hivemq_kel6",
+        "type": "mqtt-broker",
+        "name": "HiveMQ Public Broker",
+        "broker": "broker.hivemq.com",
+        "port": "1883",
+        "clientid": "nodered-kel6-client",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "ui_group_ruang1",
+        "type": "ui_group",
+        "name": "Ruangan 1",
+        "tab": "ui_tab_kel6",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "ui_group_ruang2",
+        "type": "ui_group",
+        "name": "Ruangan 2",
+        "tab": "ui_tab_kel6",
+        "order": 2,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "ui_group_ruang3",
+        "type": "ui_group",
+        "name": "Ruangan 3",
+        "tab": "ui_tab_kel6",
+        "order": 3,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "ui_group_ruang4",
+        "type": "ui_group",
+        "name": "Ruangan 4",
+        "tab": "ui_tab_kel6",
+        "order": 4,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "ui_tab_kel6",
+        "type": "ui_tab",
+        "name": "Monitoring & Kendali 4 Ruangan",
+        "icon": "dashboard",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "3b91c86380a710a0",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "node-red-dashboard": "3.6.6"
+        }
+    }
+]
