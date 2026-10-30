@@ -87,38 +87,9 @@
         "y": 80,
         "wires": [
             [
-                "ui_gauge_temp_ruang1",
                 "ui_chart_all_temps"
             ]
         ]
-    },
-    {
-        "id": "ui_gauge_temp_ruang1",
-        "type": "ui_gauge",
-        "z": "flow_kel6_mqtt",
-        "name": "Suhu Ruangan 1",
-        "group": "ui_group_ruang1",
-        "order": 2,
-        "width": "3",
-        "height": "3",
-        "gtype": "gage",
-        "title": "Suhu",
-        "label": "°C",
-        "format": "{{value}} °C",
-        "min": 0,
-        "max": "50",
-        "colors": [
-            "#38bdf8",
-            "#34d399",
-            "#ef4444"
-        ],
-        "seg1": "28",
-        "seg2": "38",
-        "diff": false,
-        "className": "",
-        "x": 600,
-        "y": 80,
-        "wires": []
     },
     {
         "id": "mqtt_in_humid_ruang1",
@@ -430,38 +401,9 @@
         "y": 280,
         "wires": [
             [
-                "ui_gauge_temp_ruang2",
                 "ui_chart_all_temps"
             ]
         ]
-    },
-    {
-        "id": "ui_gauge_temp_ruang2",
-        "type": "ui_gauge",
-        "z": "flow_kel6_mqtt",
-        "name": "Suhu Ruangan 2",
-        "group": "ui_group_ruang2",
-        "order": 2,
-        "width": "3",
-        "height": "3",
-        "gtype": "gage",
-        "title": "Suhu",
-        "label": "°C",
-        "format": "{{value}} °C",
-        "min": 0,
-        "max": "50",
-        "colors": [
-            "#38bdf8",
-            "#34d399",
-            "#ef4444"
-        ],
-        "seg1": "28",
-        "seg2": "38",
-        "diff": false,
-        "className": "",
-        "x": 600,
-        "y": 280,
-        "wires": []
     },
     {
         "id": "mqtt_in_humid_ruang2",
@@ -773,38 +715,9 @@
         "y": 480,
         "wires": [
             [
-                "ui_gauge_temp_ruang3",
                 "ui_chart_all_temps"
             ]
         ]
-    },
-    {
-        "id": "ui_gauge_temp_ruang3",
-        "type": "ui_gauge",
-        "z": "flow_kel6_mqtt",
-        "name": "Suhu Ruangan 3",
-        "group": "ui_group_ruang3",
-        "order": 2,
-        "width": "3",
-        "height": "3",
-        "gtype": "gage",
-        "title": "Suhu",
-        "label": "°C",
-        "format": "{{value}} °C",
-        "min": 0,
-        "max": "50",
-        "colors": [
-            "#38bdf8",
-            "#34d399",
-            "#ef4444"
-        ],
-        "seg1": "28",
-        "seg2": "38",
-        "diff": false,
-        "className": "",
-        "x": 600,
-        "y": 480,
-        "wires": []
     },
     {
         "id": "mqtt_in_humid_ruang3",
@@ -929,6 +842,10 @@
         "format": "{{msg.payload}}",
         "layout": "row-spread",
         "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": "",
+        "color": "#000000",
         "x": 600,
         "y": 440,
         "wires": []
@@ -1116,38 +1033,9 @@
         "y": 680,
         "wires": [
             [
-                "ui_gauge_temp_ruang4",
                 "ui_chart_all_temps"
             ]
         ]
-    },
-    {
-        "id": "ui_gauge_temp_ruang4",
-        "type": "ui_gauge",
-        "z": "flow_kel6_mqtt",
-        "name": "Suhu Ruangan 4",
-        "group": "ui_group_ruang4",
-        "order": 2,
-        "width": "3",
-        "height": "3",
-        "gtype": "gage",
-        "title": "Suhu",
-        "label": "°C",
-        "format": "{{value}} °C",
-        "min": 0,
-        "max": "50",
-        "colors": [
-            "#38bdf8",
-            "#34d399",
-            "#ef4444"
-        ],
-        "seg1": "28",
-        "seg2": "38",
-        "diff": false,
-        "className": "",
-        "x": 600,
-        "y": 680,
-        "wires": []
     },
     {
         "id": "mqtt_in_humid_ruang4",
@@ -1514,7 +1402,7 @@
         "hidden": false
     },
     {
-        "id": "3b91c86380a710a0",
+        "id": "b808b227375deb5e",
         "type": "global-config",
         "env": [],
         "modules": {
