@@ -43,7 +43,9 @@ const int L1_A_PIN = 25;  // LED Lampu 1 Ruangan A (+ resistor 220 Ohm)
 const int L2_A_PIN = 26;  // LED Lampu 2 Ruangan A (+ resistor 220 Ohm)
 
 // Ruangan B (ruang2 / ruang4)
-const int POT_B_PIN = 35; // ADC1_CH7 (Untuk ruang4 atau fallback ruang2)
+// Catatan: Pin potensiometer 35 HANYA digunakan oleh ruang4 pada ESP32 #2.
+// Ruang 2 pada ESP32 #1 murni hanya menggunakan sensor fisik I2C AHT10 (tidak membaca potensio).
+const int POT_B_PIN = 35; // ADC1_CH7 (Hanya untuk ruang4 pada ESP32 #2)
 const int L1_B_PIN = 27;  // LED Lampu 1 Ruangan B (+ resistor 220 Ohm)
 const int L2_B_PIN = 32;  // LED Lampu 2 Ruangan B (+ resistor 220 Ohm)
 
@@ -214,20 +216,24 @@ void roomTask(void *pvParameters) {
       float humidity = 0.0f;
       int adcVal = -1;
 
-      // Khusus Ruang 2: Gunakan sensor fisik AHT10 (I2C SDA=21, SCL=22)
-      if (strcmp(ctx->roomName, "ruang2") == 0 && ahtAvailable) {
-        sensors_event_t humid_event, temp_event;
-        if (aht.getEvent(&humid_event, &temp_event)) {
-          suhu = temp_event.temperature;
-          humidity = humid_event.relative_humidity;
+      // Khusus Ruang 2: MURNI hanya membaca sensor fisik digital AHT10 (I2C SDA=21, SCL=22)
+      // TIDAK membaca potensiometer sama sekali (tidak ada analogRead)
+      if (strcmp(ctx->roomName, "ruang2") == 0) {
+        if (ahtAvailable) {
+          sensors_event_t humid_event, temp_event;
+          if (aht.getEvent(&humid_event, &temp_event)) {
+            suhu = temp_event.temperature;
+            humidity = humid_event.relative_humidity;
+          } else {
+            Serial.printf("[%s] [AHT10 ERROR] Gagal membaca data dari sensor AHT10!\n",
+                          ctx->roomName);
+          }
         } else {
-          // Fallback ke potensiometer jika pembacaan gagal sesaat
-          adcVal = analogRead(ctx->potPin);
-          suhu = adcVal * 50.0f / 4095.0f;
-          humidity = 45.0f + (0.4f * suhu);
+          Serial.printf("[%s] [AHT10 ERROR] Sensor AHT10 belum terdeteksi (SDA=21, SCL=22)!\n",
+                        ctx->roomName);
         }
       } else {
-        // Ruangan 1, 3, 4 (tetap): Potensiometer ADC1 + rumus kelembapan
+        // Ruangan 1, 3, dan 4: Membaca simulator potensiometer ADC1 + rumus kelembapan
         adcVal = analogRead(ctx->potPin);
         suhu = adcVal * 50.0f / 4095.0f;
         humidity = 45.0f + (0.4f * suhu);
@@ -241,11 +247,11 @@ void roomTask(void *pvParameters) {
       snprintf(bufHumid, sizeof(bufHumid), "%.1f", humidity);
       ctx->mqtt.publish(ctx->tHumid, bufHumid, false);
 
-      if (strcmp(ctx->roomName, "ruang2") == 0 && ahtAvailable && adcVal == -1) {
-        Serial.printf("[%s] [AHT10] %s -> %s C | %s -> %s %%\n",
+      if (strcmp(ctx->roomName, "ruang2") == 0) {
+        Serial.printf("[%s] [AHT10 MURNI] %s -> %s C | %s -> %s %%\n",
                       ctx->roomName, ctx->tTemp, bufTemp, ctx->tHumid, bufHumid);
       } else {
-        Serial.printf("[%s] [POT] %s -> %s C | %s -> %s %% (ADC: %d)\n",
+        Serial.printf("[%s] [POTENSIOMETER] %s -> %s C | %s -> %s %% (ADC: %d)\n",
                       ctx->roomName, ctx->tTemp, bufTemp, ctx->tHumid, bufHumid,
                       adcVal);
       }
@@ -321,7 +327,7 @@ void setup() {
       Serial.println("[AHT10] Sensor AHT10 berhasil diinisialisasi (SDA=21, SCL=22) untuk Ruang 2.");
     } else {
       ahtAvailable = false;
-      Serial.println("[AHT10] PERINGATAN: Sensor AHT10 tidak terdeteksi! Menggunakan fallback potensiometer pin 35.");
+      Serial.println("[AHT10] PERINGATAN: Sensor AHT10 tidak terdeteksi! Periksa sambungan kabel SDA (GPIO 21) dan SCL (GPIO 22).");
     }
   }
 
