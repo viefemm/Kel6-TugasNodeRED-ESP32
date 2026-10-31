@@ -9,7 +9,7 @@ Sistem telemetri multi-ruangan cerdas berbasis protokol Message Queuing Telemetr
 
 | Ruangan | Nama Anggota | NRP | Perangkat Sensor / Hardware | Username GitHub |
 | :--- | :--- | :--- | :--- | :--- | 
-| **Ruang 1** | Enzillana Afwa | 2124600092 | **Sensor Digital DHT11 (GPIO 4)** | - |
+| **Ruang 1** | Enzillana Afwa | 2124600092 | **Sensor Digital DHT11 (GPIO 4)** | [Enzillana](https://github.com/Enzillana) |
 | **Ruang 2** | Syauqi Fardi Sya'bani | 2124600099 | **Sensor Digital DHT11 (GPIO 21)** | [viefemm](https://github.com/viefemm) |
 | **Ruang 3** | Farrel Putra Ardiansyah | 2124600116 | **Sensor Digital DHT11 (GPIO 4)** | [frpaa](https://github.com/frpaa) |
 | **Ruang 4** | Rara Kissya Erbianti | 2124600119 | **Sensor Digital DHT11 (GPIO 21)** | [ssyashain](https://github.com/ssyashain) | 
