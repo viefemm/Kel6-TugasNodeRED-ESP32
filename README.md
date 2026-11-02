@@ -265,14 +265,12 @@ Kel6-TugasNodeRED-ESP32/
 │   │   ├── src/main12.cpp                 # Source code C++ PlatformIO
 │   │   └── include/
 │   │       ├── secrets.h.example          # Template konfigurasi kredensial Wi-Fi
-│   │       └── secrets.h                  # Berkas rahasia lokal (diabaikan git)
 │   └── esp32_ruang34/                     # Firmware ESP32 #2 (Ruang 3 & Ruang 4 + LWT)
 │       ├── esp32_ruang34.ino              # Source code Arduino IDE
 │       ├── platformio.ini                 # Konfigurasi build PlatformIO
 │       ├── src/main34.cpp                 # Source code C++ PlatformIO
 │       └── include/
 │           ├── secrets.h.example          # Template konfigurasi kredensial Wi-Fi
-│           └── secrets.h                  # Berkas rahasia lokal (diabaikan git)
 ├── node-red/
 │   └── flows.json                         # Berkas ekspor konfigurasi seluruh flow dan UI Dashboard
 ├── docs/
