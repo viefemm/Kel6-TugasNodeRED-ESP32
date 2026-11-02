@@ -8,6 +8,12 @@ Sistem telemetri multi-ruangan cerdas dan kendali aktuator terdistribusi berbasi
 
 ---
 
+## License
+
+This project is licensed under the MIT License, See the [LICENSE](LICENSE) file for details.
+
+---
+
 ## 📹 Tautan Video Kelompok
 
 Sesuai ketentuan evaluasi, berikut adalah dokumentasi video pengerjaan proyek Kelompok 6:
