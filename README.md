@@ -19,7 +19,7 @@ This project is licensed under the MIT License, See the [LICENSE](LICENSE) file 
 Sesuai ketentuan evaluasi, berikut adalah dokumentasi video pengerjaan proyek Kelompok 6:
 
 * 🎬 **[Tautan Video Demo Alat (Google Drive)](https://drive.google.com/file/d/1HhSpIJHn7SjSMZfvVB8ZDLf64A37hRlt/view?usp=sharing)** — Memperlihatkan pengujian fungsional terpadu (T2, T3, T5, T7, T9, T10, T11, T12) dengan layar dashboard dan perangkat fisik tampak dalam satu frame.
-* 🎥 **[Tautan Video Presentasi Kelompok (Google Drive)](link video presentasi)** — Pemaparan materi lengkap, arsitektur sistem, penjelasan firmware ESP32, flow Node-RED, serta kendala dan solusi oleh seluruh anggota kelompok.
+* 🎥 **[Tautan Video Presentasi Kelompok (Google Drive)](https://drive.google.com/file/d/1l4P0oq3kgGpqvOR7VD3iAJpnx_bkjrrc/view?usp=drive_link)** — Pemaparan materi lengkap, arsitektur sistem, penjelasan firmware ESP32, flow Node-RED, serta kendala dan solusi oleh seluruh anggota kelompok.
 
 *(Tautan juga terdokumentasi pada berkas `video/LINK.md`)*.
 
